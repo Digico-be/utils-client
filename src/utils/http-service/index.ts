@@ -17,31 +17,33 @@ export class HttpRequestBuilder {
      * @param method HTTP method (GET, POST, PUT, DELETE)
      * @param body Optional request body
      */
-    private async request(url: string, method: string, body?: Record<string, unknown> | FormData): Promise<Response> {
+    private async request<T>(url: string, method: string, body?: T | FormData | Record<string, unknown>): Promise<T> {
+        const isFormData = body instanceof FormData
+
         const response = await fetch(url, {
             method,
-            headers: body instanceof FormData ? this.headers : { ...this.headers, 'Content-Type': 'application/json' },
-            body: body ? (body instanceof FormData ? body : JSON.stringify(body)) : null
+            headers: isFormData ? this.headers : { ...this.headers, 'Content-Type': 'application/json' },
+            body: isFormData ? body : JSON.stringify(body)
         })
 
         if (!response.ok) {
             throw await response.json()
         }
 
-        return response.json()
+        return response.json() as Promise<T>
     }
 
     /**
      * Build and fetch GET with the current options
      * @return unhandled the Promise<Response> of the fetch
      */
-    async get(url: string, params?: Record<string, any>): Promise<Response> {
+    async get<T>(url: string, params?: Record<string, any>): Promise<T> {
         if (params) {
             const queryString = new URLSearchParams(params).toString()
             url += `?${queryString}`
         }
 
-        return this.request(url, 'GET')
+        return this.request<T>(url, 'GET')
     }
 
     /**
@@ -49,8 +51,8 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async post(url: string, data: Record<string, unknown> | FormData): Promise<Response> {
-        return this.request(url, 'POST', data)
+    async post<T>(url: string, data: T | FormData): Promise<T> {
+        return this.request<T>(url, 'POST', data)
     }
 
     /**
@@ -58,8 +60,8 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async put(url: string, data: Record<string, unknown> | FormData): Promise<Response> {
-        return this.request(url, 'PUT', data)
+    async put<T>(url: string, data: T | FormData): Promise<T> {
+        return this.request<T>(url, 'PUT', data)
     }
 
     /**
@@ -67,7 +69,7 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async delete(url: string, data: Record<string, unknown> | FormData): Promise<Response> {
-        return this.request(url, 'DELETE', data)
+    async delete<T>(url: string, data: T | FormData): Promise<T> {
+        return this.request<T>(url, 'DELETE', data)
     }
 }
