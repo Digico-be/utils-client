@@ -1,0 +1,32 @@
+{
+    "name": "@digico/utils",
+    "version": "0.0.1",
+    "scripts": {
+        "prepare": "npm run build",
+        "build": "tsc"
+    },
+    "type": "module",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/types/index.d.ts",
+    "files": [
+        "dist/**/*"
+    ],
+    "sideEffects": false,
+    "peerDependencies": {
+        "next": "15.0.0",
+        "postcss": "^8.5.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-hook-form": "^7.53.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.13.4",
+        "@types/react": "^18.3.1",
+        "@types/react-dom": "^18.3.1",
+        "eslint": "^9.20.1",
+        "eslint-config-next": "^15.0.0",
+        "prettier": "^3.5.0",
+        "typescript": "^5.4.2"
+    }
+}
