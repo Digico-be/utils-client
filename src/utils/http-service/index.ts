@@ -21,46 +21,36 @@ export class HttpRequestBuilder {
         const response = await fetch(url, {
             method,
             headers: this.headers,
-            body: body ?? null,
-        });
+            body: body ?? null
+        })
 
         if (!response.ok) {
-            throw await response.json();
+            throw await response.json()
         }
 
-        return response.json();
+        return response.json()
     }
 
     /**
      * Build and fetch GET with the current options
      * @return unhandled the Promise<Response> of the fetch
      */
-    async get(url: string, params?: Record<string, any>): Promise<Response>{
-
+    async get(url: string, params?: Record<string, any>): Promise<Response> {
         if (params) {
-            const queryString = new URLSearchParams(params).toString();
-            url += `?${queryString}`;
+            const queryString = new URLSearchParams(params).toString()
+            url += `?${queryString}`
         }
 
-        return this.request(url, 'GET');
+        return this.request(url, 'GET')
     }
 
-     /**
+    /**
      * Send data with a POST request
      * @param url Request URL
      * @param data FormData to be sent
      */
-     async post(url: string, data: FormData): Promise<Response>{
-        return this.request(url, 'POST', data);
-    }
-    
-    /**
-     * Send data with a PUT request
-     * @param url Request URL
-     * @param data FormData to be sent
-     */
-    async put(url: string, data: FormData): Promise<Response>{
-        return this.request(url, 'PUT', data);
+    async post(url: string, data: FormData): Promise<Response> {
+        return this.request(url, 'POST', data)
     }
 
     /**
@@ -68,7 +58,16 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async delete(url: string, data: FormData): Promise<Response>{
-        return this.request(url, 'DELETE', data);
+    async put(url: string, data: FormData): Promise<Response> {
+        return this.request(url, 'PUT', data)
+    }
+
+    /**
+     * Send data with a PUT request
+     * @param url Request URL
+     * @param data FormData to be sent
+     */
+    async delete(url: string, data: FormData): Promise<Response> {
+        return this.request(url, 'DELETE', data)
     }
 }
