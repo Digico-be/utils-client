@@ -17,7 +17,7 @@ export class HttpRequestBuilder {
      * @param method HTTP method (GET, POST, PUT, DELETE)
      * @param body Optional request body
      */
-    private async request<R, T>(url: string, method: string, body?: T | FormData | Record<string, unknown>): Promise<R> {
+    private async request<R = unknown, T = unknown>(url: string, method: string, body?: T | FormData | Record<string, unknown>): Promise<R> {
         const isFormData = body instanceof FormData
 
         const response = await fetch(url, {
@@ -27,7 +27,12 @@ export class HttpRequestBuilder {
         })
 
         if (!response.ok) {
-            throw new Error(JSON.stringify(await response.json()))
+            const error: {
+                message: string
+                errors: any[]
+            } = await response.json()
+
+            throw error
         }
 
         return response.json() as Promise<R>
@@ -37,7 +42,7 @@ export class HttpRequestBuilder {
      * Build and fetch GET with the current options
      * @return unhandled the Promise<Response> of the fetch
      */
-    async get<R>(url: string, params?: Record<string, any>): Promise<R> {
+    async get<R = unknown>(url: string, params?: Record<string, any>): Promise<R> {
         if (params) {
             const queryString = new URLSearchParams(params).toString()
             url += `?${queryString}`
@@ -51,7 +56,7 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async post<R, T>(url: string, data: T | FormData): Promise<R> {
+    async post<R = unknown, T = unknown>(url: string, data: T | FormData): Promise<R> {
         return this.request<R, T>(url, 'POST', data)
     }
 
@@ -60,7 +65,7 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async put<R, T>(url: string, data: T | FormData): Promise<R> {
+    async put<R = unknown, T = unknown>(url: string, data: T | FormData): Promise<R> {
         return this.request<R, T>(url, 'PUT', data)
     }
 
