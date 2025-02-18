@@ -17,11 +17,11 @@ export class HttpRequestBuilder {
      * @param method HTTP method (GET, POST, PUT, DELETE)
      * @param body Optional request body
      */
-    private async request(url: string, method: string, body?: BodyInit): Promise<Response> {
+    private async request(url: string, method: string, body?: Record<string, unknown> | FormData): Promise<Response> {
         const response = await fetch(url, {
             method,
-            headers: this.headers,
-            body: body ?? null
+            headers: body instanceof FormData ? this.headers : { ...this.headers, 'Content-Type': 'application/json' },
+            body: body ? (body instanceof FormData ? body : JSON.stringify(body)) : null
         })
 
         if (!response.ok) {
@@ -49,7 +49,7 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async post(url: string, data: FormData): Promise<Response> {
+    async post(url: string, data: Record<string, unknown> | FormData): Promise<Response> {
         return this.request(url, 'POST', data)
     }
 
@@ -58,7 +58,7 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async put(url: string, data: FormData): Promise<Response> {
+    async put(url: string, data: Record<string, unknown> | FormData): Promise<Response> {
         return this.request(url, 'PUT', data)
     }
 
@@ -67,7 +67,7 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async delete(url: string, data: FormData): Promise<Response> {
+    async delete(url: string, data: Record<string, unknown> | FormData): Promise<Response> {
         return this.request(url, 'DELETE', data)
     }
 }
