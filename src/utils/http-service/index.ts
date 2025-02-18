@@ -17,33 +17,33 @@ export class HttpRequestBuilder {
      * @param method HTTP method (GET, POST, PUT, DELETE)
      * @param body Optional request body
      */
-    private async request<T>(url: string, method: string, body?: T | FormData | Record<string, unknown>): Promise<T> {
+    private async request<R, T>(url: string, method: string, body?: T | FormData | Record<string, unknown>): Promise<R> {
         const isFormData = body instanceof FormData
 
         const response = await fetch(url, {
             method,
             headers: isFormData ? this.headers : { ...this.headers, 'Content-Type': 'application/json' },
-            body: isFormData ? body : JSON.stringify(body)
+            body: isFormData ? body : body ? JSON.stringify(body) : null
         })
 
         if (!response.ok) {
-            throw await response.json()
+            throw new Error(JSON.stringify(await response.json()))
         }
 
-        return response.json() as Promise<T>
+        return response.json() as Promise<R>
     }
 
     /**
      * Build and fetch GET with the current options
      * @return unhandled the Promise<Response> of the fetch
      */
-    async get<T>(url: string, params?: Record<string, any>): Promise<T> {
+    async get<R>(url: string, params?: Record<string, any>): Promise<R> {
         if (params) {
             const queryString = new URLSearchParams(params).toString()
             url += `?${queryString}`
         }
 
-        return this.request<T>(url, 'GET')
+        return this.request<R, undefined>(url, 'GET')
     }
 
     /**
@@ -51,8 +51,8 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async post<T>(url: string, data: T | FormData): Promise<T> {
-        return this.request<T>(url, 'POST', data)
+    async post<R, T>(url: string, data: T | FormData): Promise<R> {
+        return this.request<R, T>(url, 'POST', data)
     }
 
     /**
@@ -60,8 +60,8 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async put<T>(url: string, data: T | FormData): Promise<T> {
-        return this.request<T>(url, 'PUT', data)
+    async put<R, T>(url: string, data: T | FormData): Promise<R> {
+        return this.request<R, T>(url, 'PUT', data)
     }
 
     /**
@@ -69,7 +69,9 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async delete<T>(url: string, data: T | FormData): Promise<T> {
-        return this.request<T>(url, 'DELETE', data)
+    async delete(url: string): Promise<Response> {
+        return this.request<undefined, undefined>(url, 'DELETE')
     }
 }
+
+export const HttpRequest = new HttpRequestBuilder()
