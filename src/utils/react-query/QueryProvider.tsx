@@ -14,5 +14,3 @@ export const QueryProvider = ({ children }: QueryClientProps) => (
         <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
 )
-
-export { queryClient }
