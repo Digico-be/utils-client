@@ -19,10 +19,14 @@ export class HttpRequestBuilder {
      */
     private async request<R = unknown, T = unknown>(url: string, method: string, body?: T | FormData | Record<string, unknown>): Promise<R> {
         const isFormData = body instanceof FormData
+        const headers = isFormData ? this.headers : { ...this.headers, 'Content-Type': 'application/json' }
 
         const response = await fetch(url, {
             method,
-            headers: isFormData ? this.headers : { ...this.headers, 'Content-Type': 'application/json' },
+            headers: {
+                Accept: 'application/json',
+                ...headers
+            },
             body: isFormData ? body : body ? JSON.stringify(body) : null
         })
 
