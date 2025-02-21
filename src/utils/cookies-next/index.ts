@@ -7,7 +7,9 @@ export const cookiesNext = async () => {
                       const allCookies = getAll()
                       return allCookies ? Object.fromEntries(allCookies.map(({ name, value }) => [name, value])) : {}
                   })
-            : await import('js-cookie').then((cookies) => cookies.get() ?? {})
+            : await import('js-cookie').then(({ default: Cookies }) => {
+                  return Cookies.get() ?? {}
+              })
 
     return {
         get: (name: string) => cookies?.[name] ?? null
