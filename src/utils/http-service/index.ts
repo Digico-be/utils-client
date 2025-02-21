@@ -1,5 +1,10 @@
 export class HttpRequestBuilder {
     private headers: HeadersInit
+    private baseURL: string
+
+    constructor() {
+        this.baseURL = this.baseURL
+    }
 
     /**
      * Adds a header to the HTTP request
@@ -17,9 +22,11 @@ export class HttpRequestBuilder {
      * @param method HTTP method (GET, POST, PUT, DELETE)
      * @param body Optional request body
      */
-    private async request<R = unknown, T = unknown>(url: string, method: string, body?: T | FormData | Record<string, unknown>): Promise<R> {
+    private async request<R = unknown, T = unknown>(endpoint: string, method: string, body?: T | FormData | Record<string, unknown>): Promise<R> {
         const isFormData = body instanceof FormData
         const headers = isFormData ? this.headers : { ...this.headers, 'Content-Type': 'application/json' }
+
+        const url = `${this.baseURL}${endpoint}`
 
         const response = await fetch(url, {
             method,
@@ -82,5 +89,3 @@ export class HttpRequestBuilder {
         return this.request<undefined, undefined>(url, 'DELETE')
     }
 }
-
-export const HttpRequest = new HttpRequestBuilder()
