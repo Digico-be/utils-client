@@ -30,8 +30,8 @@ export class HttpRequestBuilder {
         const isFormData = body instanceof FormData
 
         const defaultHeaders = {
-            'X-Tenant': cookies.get('X-tenant') ?? '',
-            Authorization: cookies.get('Authorization') ?? ''
+            ...(cookies.get('X-tenant') && { 'X-Tenant': cookies.get('X-tenant') }),
+            ...(cookies.get('Authorization') && { Authorization: cookies.get('Authorization') })
         }
 
         const headers = isFormData ? this.headers : { ...this.headers, 'Content-Type': 'application/json' }
