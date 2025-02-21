@@ -1,4 +1,4 @@
-import { cookiesNext } from '@utils/cookies-next'
+import { cookiesNext } from './../cookies-next'
 
 export class HttpRequestBuilder {
     private headers: HeadersInit
