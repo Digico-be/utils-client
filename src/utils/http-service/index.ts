@@ -2,8 +2,8 @@ export class HttpRequestBuilder {
     private headers: HeadersInit
     private baseURL: string
 
-    constructor() {
-        this.baseURL = this.baseURL
+    constructor(url?: string) {
+        this.baseURL = url
     }
 
     /**
