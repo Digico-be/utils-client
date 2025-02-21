@@ -1,3 +1,5 @@
+import { cookiesNext } from '@utils/cookies-next'
+
 export class HttpRequestBuilder {
     private headers: HeadersInit
     private baseURL: string
@@ -23,7 +25,15 @@ export class HttpRequestBuilder {
      * @param body Optional request body
      */
     private async request<R = unknown, T = unknown>(endpoint: string, method: string, body?: T | FormData | Record<string, unknown>): Promise<R> {
+        const cookies = await cookiesNext()
+
         const isFormData = body instanceof FormData
+
+        const defaultHeaders = {
+            'X-Tenant': cookies.get('X-tenant') ?? '',
+            Authorization: cookies.get('Authorization') ?? ''
+        }
+
         const headers = isFormData ? this.headers : { ...this.headers, 'Content-Type': 'application/json' }
 
         const url = `${this.baseURL}${endpoint}`
@@ -32,6 +42,7 @@ export class HttpRequestBuilder {
             method,
             headers: {
                 Accept: 'application/json',
+                ...defaultHeaders,
                 ...headers
             },
             body: isFormData ? body : body ? JSON.stringify(body) : null
