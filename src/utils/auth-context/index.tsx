@@ -2,7 +2,7 @@
 
 import { createContext, ReactNode, useContext } from 'react'
 
-const AuthContext = createContext<
+export const AuthContext = createContext<
     | {
           user: any
           tenant: any
