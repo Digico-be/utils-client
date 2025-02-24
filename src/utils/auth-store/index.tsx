@@ -1,3 +1,5 @@
+import { create } from 'zustand'
+
 interface UserType {
     firstname: string
     lastname: string
@@ -9,7 +11,7 @@ interface TenantType {
     name: string
 }
 
-export const authStore = {
+export const authStore = create((set, get)) => ({
     user: null as UserType | null,
     tenant: null as TenantType | null,
 
@@ -21,4 +23,4 @@ export const authStore = {
     getAuth() {
         return { user: this.user, tenant: this.tenant }
     }
-}
+})

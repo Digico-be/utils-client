@@ -16,11 +16,12 @@
     "peerDependencies": {
         "@tanstack/react-query": "^5.66.6",
         "@tanstack/react-query-devtools": "^5.66.6",
+        "js-cookie": "^3.0.5",
+        "next": "15.0.0",
         "postcss": "^8.5.2",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "next": "15.0.0",
-        "js-cookie": "^3.0.5"
+        "zustand": "^5.0.3"
     },
     "peerDependenciesMeta": {
         "@tanstack/react-query": {
@@ -36,9 +37,10 @@
         "@types/react-dom": "^18.3.1",
         "eslint": "^9.20.1",
         "eslint-config-next": "^15.0.0",
+        "js-cookie": "^3.0.5",
+        "next": "15.0.0",
         "prettier": "^3.5.0",
         "typescript": "^5.4.2",
-        "next": "15.0.0",
-        "js-cookie": "^3.0.5"
+        "zustand": "^5.0.3"
     }
 }
