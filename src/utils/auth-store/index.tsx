@@ -11,7 +11,7 @@ interface TenantType {
     name: string
 }
 
-export const authStore = create((set, get)) => ({
+export const authStore = create((set, get) => ({
     user: null as UserType | null,
     tenant: null as TenantType | null,
 
@@ -23,4 +23,4 @@ export const authStore = create((set, get)) => ({
     getAuth() {
         return { user: this.user, tenant: this.tenant }
     }
-})
+}))
