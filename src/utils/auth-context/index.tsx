@@ -1,23 +1,21 @@
 'use client'
 
-import { createContext, ReactNode, useContext } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { cookiesNext } from '@utils/cookies-next'
+import { HttpRequestBuilder } from '@utils/http-service'
 
-export const AuthContext = createContext<
-    | {
-          user: any
-          tenant: any
-      }
-    | undefined
->(undefined)
-
-export const AuthProvider = ({ children, user, tenant }: { children: ReactNode; tenant: any; user: any }) => {
-    return <AuthContext.Provider value={{ user, tenant }}>{children}</AuthContext.Provider>
-}
+const api = new HttpRequestBuilder(process.env.NEXT_PUBLIC_API_URL)
 
 export const useAuth = () => {
-    const context = useContext(AuthContext)
-    if (!context) {
-        throw new Error('useAuth need used inside AuthProvider')
-    }
-    return context
+    const auth = useQuery({
+        queryFn: async () => {
+            const tenant = (await cookiesNext()).get('X-tenant')
+            return api.setHeader({ 'X-Tenant': `${tenant}` }).get(`/auth/user`)
+        },
+        queryKey: ['auth'],
+        staleTime: Infinity,
+        gcTime: Infinity
+    })
+
+    return auth.data
 }
