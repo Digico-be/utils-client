@@ -1,4 +1,4 @@
-import cookies from 'js-cookie'
+import Cookies from 'js-cookie'
 
 interface User {
     id: number
@@ -13,7 +13,11 @@ interface Tenant {
 }
 
 export const useAuth = () => {
-    const user = JSON.parse(cookies.get('user') ?? '') as User
-    const tenant = JSON.parse(cookies.get('tenant') ?? '') as Tenant
+    const userCookie = Cookies.get('user')
+    const tenantCookie = Cookies.get('tenant')
+
+    const user = userCookie ? (JSON.parse(userCookie) as User) : null
+    const tenant = tenantCookie ? (JSON.parse(tenantCookie) as Tenant) : null
+
     return { user, tenant }
 }
