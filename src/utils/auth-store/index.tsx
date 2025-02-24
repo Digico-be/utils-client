@@ -11,16 +11,21 @@ interface TenantType {
     name: string
 }
 
-export const authStore = create((set, get) => ({
-    user: null as UserType | null,
-    tenant: null as TenantType | null,
+interface AuthState {
+    user: UserType | null
+    tenant: TenantType | null
+    setAuth: (user: UserType, tenant: TenantType) => void
+    getAuth: () => { user: UserType | null; tenant: TenantType | null }
+}
 
-    setAuth(user: UserType, tenant: TenantType) {
-        this.user = user
-        this.tenant = tenant
-    },
+export const useAuthStore = create<AuthState>((set, get) => ({
+    user: null,
+    tenant: null,
 
-    getAuth() {
-        return { user: this.user, tenant: this.tenant }
+    setAuth: (user, tenant) => set(() => ({ user, tenant })),
+
+    getAuth: () => {
+        const { user, tenant } = get()
+        return { user, tenant }
     }
 }))
