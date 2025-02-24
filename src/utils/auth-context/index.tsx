@@ -1,8 +1,8 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { cookiesNext } from '@utils/cookies-next'
-import { HttpRequestBuilder } from '@utils/http-service'
+import { cookiesNext } from '../cookies-next'
+import { HttpRequestBuilder } from '../http-service'
 
 const api = new HttpRequestBuilder(process.env.NEXT_PUBLIC_API_URL)
 
