@@ -15,26 +15,16 @@ export const getTenantUrl = (href: string): string => {
 
 export const useRouterWithTenant = () => {
     const { tenant } = useAuth()
-
-    if (!tenant) {
-        return {
-            back: () => router.back(),
-            forward: () => router.forward(),
-            prefetch: (href: string) => router.prefetch(`${href}`),
-            push: (href: string) => router.push(`${href}`),
-            replace: (href: string) => router.replace(`${href}`),
-            refresh: (href: string) => router.refresh()
-        }
-    }
-
     const router = useRouter()
+
+    const getUrl = (href: string) => (tenant ? `/${tenant.id}${href}` : href)
 
     return {
         back: () => router.back(),
         forward: () => router.forward(),
-        prefetch: (href: string) => router.prefetch(`/${tenant.id}${href}`),
-        push: (href: string) => router.push(`/${tenant.id}${href}`),
-        replace: (href: string) => router.replace(`/${tenant.id}${href}`),
-        refresh: (href: string) => router.refresh()
+        prefetch: (href: string) => router.prefetch(getUrl(href)),
+        push: (href: string) => router.push(getUrl(href)),
+        replace: (href: string) => router.replace(getUrl(href)),
+        refresh: () => router.refresh()
     }
 }
