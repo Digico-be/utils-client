@@ -13,9 +13,20 @@ export const useAuth = () => {
             return api
                 .setHeader({ 'X-Tenant': `${tenant}` })
                 .get<{
-                    data: any
+                    data: {
+                        user: {
+                            id: number
+                            firstname: string
+                            lastname: string
+                            email: string
+                        }
+                        tenant: {
+                            id: string
+                            name: string
+                        }
+                    }
                 }>(`/api/auth/user`)
-                .then((data) => data)
+                .then((response) => response.data)
         },
         queryKey: ['auth'],
         staleTime: Infinity,
