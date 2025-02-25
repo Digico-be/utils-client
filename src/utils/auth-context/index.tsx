@@ -10,12 +10,19 @@ export const useAuth = () => {
     const auth = useQuery({
         queryFn: async () => {
             const tenant = (await cookiesNext()).get('X-tenant')
-            return api.setHeader({ 'X-Tenant': `${tenant}` }).get(`/auth/user`)
+            return api
+                .setHeader({ 'X-Tenant': `${tenant}` })
+                .get<{
+                    data: any
+                }>(`/api/auth/user`)
+                .then((data) => data)
         },
         queryKey: ['auth'],
         staleTime: Infinity,
         gcTime: Infinity
     })
 
-    return auth.data
+    return {
+        ...auth.data
+    }
 }
