@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuth } from '../auth-context'
+import { useAuth } from '@utils/auth-context/useAuth'
 import { useRouter } from 'next/navigation'
 
 export const getTenantUrl = (href: string): string => {

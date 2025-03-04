@@ -5,7 +5,7 @@ export class HttpRequestBuilder {
     private baseURL: string
 
     constructor(url?: string) {
-        this.baseURL = url
+        this.baseURL = url || ''
     }
 
     /**
