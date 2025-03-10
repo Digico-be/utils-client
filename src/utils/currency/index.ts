@@ -32,3 +32,28 @@ export function getPricingDetails(
         total
     }
 }
+
+export function formatStructuredCommunication(value?: string): string {
+    if (!value) {
+        return ''
+    }
+
+    if (value.length !== 12) {
+        return value
+    }
+
+    return `+++${value.replace(/(\d{3})(\d{4})(\d{5})/, '$1/$2/$3')}+++`
+}
+
+export function formatIBAN(iban?: string) {
+    if (!iban) {
+        return ''
+    }
+
+    const cleanedIban = iban.replace(/\s+/g, '')
+
+    return cleanedIban
+        .replace(/(.{4})/g, '$1 ')
+        .trim()
+        .toUpperCase()
+}
