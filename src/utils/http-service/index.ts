@@ -100,7 +100,7 @@ export class HttpRequestBuilder {
      * @param url Request URL
      * @param data FormData to be sent
      */
-    async delete(url: string): Promise<Response> {
-        return this.request<undefined, undefined>(url, 'DELETE')
+    async delete<T = unknown>(url: string, data?: T | FormData): Promise<Response> {
+        return this.request<undefined, T>(url, 'DELETE', data)
     }
 }
