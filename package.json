@@ -1,6 +1,6 @@
 {
     "name": "@digico/utils",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "scripts": {
         "prepare": "npm run build",
         "build": "tsc"
@@ -16,11 +16,11 @@
     "peerDependencies": {
         "@tanstack/react-query": ">=5.66.6",
         "@tanstack/react-query-devtools": ">=5.66.6",
+        "dayjs": ">=1.11.13",
         "js-cookie": ">=3.0.5",
         "next": ">=15.0.0",
         "react": ">=18.3.1",
-        "react-dom": ">=18.3.1",
-        "dayjs": ">=1.11.13"
+        "react-dom": ">=18.3.1"
     },
     "peerDependenciesMeta": {
         "@tanstack/react-query": {
@@ -31,7 +31,6 @@
         }
     },
     "devDependencies": {
-        "postcss": ">=8.5.2",
         "@types/js-cookie": "^3.0.6",
         "@types/node": "^22.13.4",
         "@types/react": "^18.3.1",
